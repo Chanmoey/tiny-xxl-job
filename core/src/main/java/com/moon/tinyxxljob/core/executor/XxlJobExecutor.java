@@ -106,7 +106,7 @@ public class XxlJobExecutor {
         //首先停止内嵌服务器
         stopEmbedServer();
         //停止真正执行定时任务的各个线程
-        if (jobThreadRepository.size() > 0) {
+        if (!jobThreadRepository.isEmpty()) {
             for (Map.Entry<Integer, JobThread> item : jobThreadRepository.entrySet()) {
                 JobThread oldJobThread = removeJobThread(item.getKey(), "web container destroy and kill the job.");
                 if (oldJobThread != null) {
@@ -260,7 +260,7 @@ public class XxlJobExecutor {
     }
 
     /**
-     * 每一个定时任务对应一个ID，每个定时任务由一个线程来执行
+     * 每一个定时任务对应一个ID，每个定时任务由一个线程来执行；如果定时任务原来就有线程在执行，则停掉原来的线程
      */
     private static ConcurrentMap<Integer, JobThread> jobThreadRepository = new ConcurrentHashMap<>();
 

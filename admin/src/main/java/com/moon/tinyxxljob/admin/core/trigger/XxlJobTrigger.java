@@ -4,6 +4,7 @@ package com.moon.tinyxxljob.admin.core.trigger;
 import com.moon.tinyxxljob.admin.core.conf.XxlJobAdminConfig;
 import com.moon.tinyxxljob.admin.core.model.XxlJobGroup;
 import com.moon.tinyxxljob.admin.core.model.XxlJobInfo;
+import com.moon.tinyxxljob.admin.core.router.ExecutorRouteStrategyEnum;
 import com.moon.tinyxxljob.admin.core.scheduler.XxlJobScheduler;
 import com.moon.tinyxxljob.admin.core.util.I18nUtil;
 import com.moon.tinyxxljob.core.biz.ExecutorBiz;
@@ -35,7 +36,7 @@ public class XxlJobTrigger {
             jobInfo.setExecutorParam(executorParam);
         }
         // 查询当前任务的所有执行器
-        XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroup().load(jobInfo.getJobGroup());
+        XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().load(jobInfo.getJobGroup());
 
         // 这里的addressList不为空，说明是用户在web页面手动设置的
         if (addressList != null && !addressList.trim().isEmpty()) {
@@ -50,18 +51,26 @@ public class XxlJobTrigger {
     private static void processTrigger(XxlJobGroup group, XxlJobInfo jobInfo,
                                        int finalFailRetryCount, TriggerTypeEnum triggerType,
                                        int index, int total) {
+        ExecutorRouteStrategyEnum executorRouteStrategyEnum = ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), ExecutorRouteStrategyEnum.RANDOM);
+
         TriggerParam triggerParam = new TriggerParam();
         triggerParam.setJobId(jobInfo.getId());
         triggerParam.setExecutorHandler(jobInfo.getExecutorHandler());
         triggerParam.setExecutorParams(jobInfo.getExecutorParam());
         triggerParam.setGlueType(jobInfo.getGlueType());
         String address = null;
+        ReturnT<String> routeAddressResult;
         List<String> registryList = group.getRegistryList();
         // 路由策略，选择一个地址
         if (registryList != null && !registryList.isEmpty()) {
-            address = registryList.get(0);
+            routeAddressResult = executorRouteStrategyEnum.getRouter().route(triggerParam, registryList);
+            if (ReturnT.SUCCESS_CODE == routeAddressResult.getCode()) {
+                address = routeAddressResult.getContent();
+            } else {
+                routeAddressResult = new ReturnT<String>(ReturnT.FAIL_CODE, I18nUtil.getString("jobconf_trigger_address_empty"));
+            }
         }
-        ReturnT<String> triggerResult = null;
+        ReturnT<String> triggerResult;
         if (address != null) {
             // 进行远程调用
             triggerResult = runExecutor(triggerParam, address);

@@ -136,11 +136,11 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
         this.xxlJobInfoDao = xxlJobInfoDao;
     }
 
-    public XxlJobGroupDao getXxlJobGroup() {
+    public XxlJobGroupDao getXxlJobGroupDao() {
         return xxlJobGroup;
     }
 
-    public void setXxlJobGroup(XxlJobGroupDao xxlJobGroup) {
+    public void setXxlJobGroupDao(XxlJobGroupDao xxlJobGroup) {
         this.xxlJobGroup = xxlJobGroup;
     }
 }

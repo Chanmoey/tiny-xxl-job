@@ -1,6 +1,7 @@
 package com.moon.tinyxxljob.core.biz.client;
 
 import com.moon.tinyxxljob.core.biz.ExecutorBiz;
+import com.moon.tinyxxljob.core.biz.model.IdleBeatParam;
 import com.moon.tinyxxljob.core.biz.model.ReturnT;
 import com.moon.tinyxxljob.core.biz.model.TriggerParam;
 import com.moon.tinyxxljob.core.biz.util.XxlJobRemotingUtil;
@@ -23,6 +24,16 @@ public class ExecutorBizClient implements ExecutorBiz {
         if (!this.addressUrl.endsWith("/")) {
             this.addressUrl = this.addressUrl + "/";
         }
+    }
+
+    @Override
+    public ReturnT<String> beat() {
+        return null;
+    }
+
+    @Override
+    public ReturnT<String> idleBeat(IdleBeatParam idleBeatParam) {
+        return null;
     }
 
     @Override

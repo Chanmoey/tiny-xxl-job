@@ -1,6 +1,7 @@
 package com.moon.tinyxxljob.core.biz.impl;
 
 import com.moon.tinyxxljob.core.biz.ExecutorBiz;
+import com.moon.tinyxxljob.core.biz.model.IdleBeatParam;
 import com.moon.tinyxxljob.core.biz.model.ReturnT;
 import com.moon.tinyxxljob.core.biz.model.TriggerParam;
 import com.moon.tinyxxljob.core.executor.XxlJobExecutor;
@@ -18,6 +19,16 @@ public class ExecutorBizImpl implements ExecutorBiz {
 
     private static Logger logger = LoggerFactory.getLogger(ExecutorBizImpl.class);
 
+
+    @Override
+    public ReturnT<String> beat() {
+        return null;
+    }
+
+    @Override
+    public ReturnT<String> idleBeat(IdleBeatParam idleBeatParam) {
+        return null;
+    }
 
     @Override
     public ReturnT<String> run(TriggerParam triggerParam) {
