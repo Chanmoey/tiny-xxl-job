@@ -1,17 +1,14 @@
 package com.moon.tinyxxljob.admin.core.conf;
 
-import com.moon.tinyxxljob.admin.core.model.XxlJobGroup;
 import com.moon.tinyxxljob.admin.core.scheduler.XxlJobScheduler;
-import com.moon.tinyxxljob.admin.dao.XxlJobGroupDao;
-import com.moon.tinyxxljob.admin.dao.XxlJobInfoDao;
-import com.moon.tinyxxljob.admin.dao.XxlJobRegistryDao;
+import com.moon.tinyxxljob.admin.dao.*;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-import java.sql.DatabaseMetaData;
 import java.util.Arrays;
 
 /**
@@ -103,44 +100,47 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     }
 
 
-    // TODO 数据库访问的dao
+    @Resource
+    private XxlJobLogDao xxlJobLogDao;
+    @Resource
+    private XxlJobInfoDao xxlJobInfoDao;
+    @Resource
+    private XxlJobRegistryDao xxlJobRegistryDao;
+    @Resource
+    private XxlJobGroupDao xxlJobGroupDao;
+    @Resource
+    private XxlJobLogReportDao xxlJobLogReportDao;
+    @Resource
+    private JavaMailSender mailSender;
     @Resource
     private DataSource dataSource;
 
-    @Resource
-    private XxlJobInfoDao xxlJobInfoDao;
 
-    @Resource
-    private XxlJobGroupDao xxlJobGroup;
-
-    public XxlJobRegistryDao getXxlJobRegistryDao() {
-        return xxlJobRegistryDao;
-    }
-
-    public void setXxlJobRegistryDao(XxlJobRegistryDao xxlJobRegistryDao) {
-        this.xxlJobRegistryDao = xxlJobRegistryDao;
-    }
-
-    @Resource
-    private XxlJobRegistryDao xxlJobRegistryDao;
-
-    public DataSource getDataSource() {
-        return dataSource;
+    public XxlJobLogDao getXxlJobLogDao() {
+        return xxlJobLogDao;
     }
 
     public XxlJobInfoDao getXxlJobInfoDao() {
         return xxlJobInfoDao;
     }
 
-    public void setXxlJobInfoDao(XxlJobInfoDao xxlJobInfoDao) {
-        this.xxlJobInfoDao = xxlJobInfoDao;
+    public XxlJobRegistryDao getXxlJobRegistryDao() {
+        return xxlJobRegistryDao;
     }
 
     public XxlJobGroupDao getXxlJobGroupDao() {
-        return xxlJobGroup;
+        return xxlJobGroupDao;
     }
 
-    public void setXxlJobGroupDao(XxlJobGroupDao xxlJobGroup) {
-        this.xxlJobGroup = xxlJobGroup;
+    public XxlJobLogReportDao getXxlJobLogReportDao() {
+        return xxlJobLogReportDao;
+    }
+
+    public JavaMailSender getMailSender() {
+        return mailSender;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
     }
 }
