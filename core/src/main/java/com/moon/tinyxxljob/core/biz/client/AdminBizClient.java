@@ -1,9 +1,12 @@
 package com.moon.tinyxxljob.core.biz.client;
 
 import com.moon.tinyxxljob.core.biz.AdminBiz;
+import com.moon.tinyxxljob.core.biz.model.HandleCallbackParam;
 import com.moon.tinyxxljob.core.biz.model.RegistryParam;
 import com.moon.tinyxxljob.core.biz.model.ReturnT;
 import com.moon.tinyxxljob.core.biz.util.XxlJobRemotingUtil;
+
+import java.util.List;
 
 /**
  * @author Chanmoey
@@ -39,5 +42,10 @@ public class AdminBizClient implements AdminBiz {
     @Override
     public ReturnT<String> registryRemove(RegistryParam registryParam) {
         return XxlJobRemotingUtil.postBody(addressUrl + "api/registryRemove", accessToken, timeout, registryParam, String.class);
+    }
+
+    @Override
+    public ReturnT<String> callback(List<HandleCallbackParam> callbackParamList) {
+        return XxlJobRemotingUtil.postBody(addressUrl+"api/callback", accessToken, timeout, callbackParamList, String.class);
     }
 }
